@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
-    <div className='font-lexend-deca border-8 border-red-500 h-[100vh] w-[100vw]'>
+    <div className='font-lexend-deca border-8 border-[#2C8E53] h-[100vh] w-[100vw] overflow-auto'>
       <nav className="bg-blue-500 text-white p-4">
         <div className="container mx-auto flex justify-between">
           <div className="font-bold">Logo</div>
