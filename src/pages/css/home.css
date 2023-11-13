@@ -1,0 +1,52 @@
+/* Home.css */
+
+.menu-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s;
+  z-index: 1;
+}
+
+.menu-overlay.open {
+  width: 100%;
+}
+
+.menu-item {
+  transform: translateX(100%); /* Start off-screen to the right */
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  font-size: 40px;
+  margin-bottom: 5px;
+  padding-left: 20px;
+  text-decoration: none;
+  color: white;
+}
+
+.menu-item:hover {
+    color: gray;
+    padding-left: 30px;
+    transform: translateX(100%);
+    transition: transform 1s, opacity 1s;
+}
+
+.menu-item.active {
+  color: #2C8E53;
+}
+
+.menu-overlay.open .menu-item {
+  transform: translateX(0); /* Slide in from the right */
+  opacity: 1; /* Fade in */
+}
+
+.logo-white:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
