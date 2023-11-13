@@ -68,7 +68,7 @@ const Home = () => {
             <Link to="/connect" className={location.pathname === '/connect' ? 'menu-item active' : 'menu-item'}>CONNECT</Link>
           </div>
 
-          <a href='https://www.instagram.com/pedestal_id' className='absolute bottom-0 right-0 mb-16 mr-14 flex flex-col items-end gap-2 bg-gradient-to-b from-[#77BF82] to-[#3A6742] px-4 py-2 rounded-md'>
+          <a href='https://www.instagram.com/pedestal.id' className='absolute bottom-0 right-0 mb-16 mr-14 flex flex-col items-end gap-2 bg-gradient-to-b from-[#77BF82] to-[#3A6742] px-4 py-2 rounded-md'>
             {/* <p className='text-white'>Our Social Media:</p> */}
             <div className='flex flex-row justify-center items-center gap-3 text-white'>
               <p className='font-bold'>@pedestal.id</p>
