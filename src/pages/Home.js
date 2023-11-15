@@ -18,10 +18,24 @@ const Home = () => {
 
   const [showLanguagePopup, setShowLanguagePopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [languageChangeMessage, setLanguageChangeMessage] = useState('');
 
   const toggleLanguage = () => {
-    setIsIndonesian(!isIndonesian);
+    setIsLoading(true);
+    const newLanguage = !isIndonesian;
+    localStorage.setItem('isIndonesian', newLanguage);
+    setLanguageChangeMessage(`Changing language to ${newLanguage ? 'ID' : 'EN'}, please wait...`);
+  
+    setTimeout(() => {
+      setIsLoading(false);
+      setLanguageChangeMessage('');
+  
+      setTimeout(() => {
+        setIsIndonesian(newLanguage);
+      }, 0);
+    }, 1000);
   };
+  
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -33,11 +47,13 @@ const Home = () => {
 
   const handleLanguageSelect = (selectedLanguage) => {
     setIsLoading(true);
+    setLanguageChangeMessage(`Changing language to ${selectedLanguage === 'id' ? 'ID' : 'EN'}, please wait...`);
     setTimeout(() => {
       setIsIndonesian(selectedLanguage === 'id');
       setShowLanguagePopup(false);
       localStorage.setItem('isIndonesian', selectedLanguage === 'id');
       setIsLoading(false);
+      setLanguageChangeMessage('');
     }, 2000); // Set the loading duration in milliseconds (2 seconds in this case)
   };
 
@@ -53,7 +69,7 @@ const Home = () => {
       )}
       {isLoading && (
         <div className="loading-overlay">
-          <p>Please wait...</p>
+          <p>{languageChangeMessage || 'Please wait...'}</p>
         </div>
       )}
       <div className="h-[100%] w-[100%] p-[35px]">
