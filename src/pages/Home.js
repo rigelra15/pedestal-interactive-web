@@ -84,6 +84,7 @@ const Home = () => {
               <button
                 className=""
                 onClick={toggleMenu}
+                disabled={isMenuOpen}
               >
                 <div className="hamburger-line bg-black mb-[5px] w-[30px] h-[3px]"></div>
                 <div className="hamburger-line bg-black mb-[5px] w-[30px] h-[3px]"></div>
