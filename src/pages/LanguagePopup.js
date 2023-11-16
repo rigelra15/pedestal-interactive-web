@@ -38,20 +38,19 @@ const LanguagePopup = ({ onSelectLanguage }) => {
     onSelectLanguage(selectedLanguage);
   };
 
-  // Define a style object for the button with a custom background color
   const buttonStyle = {
-    backgroundColor: '#2C8E53', // Change the background color here
-    color: 'white', // Text color
-    borderRadius: '4px', // Border radius
-    padding: '10px 20px', // Padding
-    cursor: 'pointer', // Cursor on hover
+    backgroundColor: '#2C8E53',
+    color: 'white',
+    borderRadius: '4px',
+    padding: '10px 20px',
+    cursor: 'pointer',
   };
 
   return (
     <div className="language-popup-background">
       <div className="language-popup">
         {/* Display the user's location */}
-        <div className='flex flex-row gap-2 justify-center items-center px-3 py-2 mb-3 bg-red-500 text-white rounded-lg'>
+        <div className='flex flex-row gap-2 justify-center items-center px-3 py-2 mb-3 bg-sky-500 text-white rounded-lg'>
           <FaMapMarkerAlt className='text-white' />
           {isLanguageSelected ?
             <p className=''>
