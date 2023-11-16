@@ -7,6 +7,7 @@ import ReactSwitch from 'react-switch';
 import './css/home.css'; // Import a CSS file for custom styles (create this file)
 import LanguagePopup from './LanguagePopup';
 import './css/LoadingOverlay.css'
+import { FaFlag, FaChevronDown } from 'react-icons/fa'
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,6 +20,11 @@ const Home = () => {
   const [showLanguagePopup, setShowLanguagePopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [languageChangeMessage, setLanguageChangeMessage] = useState('');
+
+  const handleLanguageChange = (event) => {
+    const selectedLanguage = event.target.value;
+    handleLanguageSelect(selectedLanguage);
+  };
 
   const toggleLanguage = () => {
     setIsLoading(true);
@@ -47,14 +53,14 @@ const Home = () => {
 
   const handleLanguageSelect = (selectedLanguage) => {
     setIsLoading(true);
-    setLanguageChangeMessage(`Changing language to ${selectedLanguage === 'id' ? 'ID' : 'EN'}, please wait...`);
+    setLanguageChangeMessage(`Changing language to ${selectedLanguage === 'id' ? 'Indonesian' : 'English'}, please wait...`);
     setTimeout(() => {
       setIsIndonesian(selectedLanguage === 'id');
       setShowLanguagePopup(false);
       localStorage.setItem('isIndonesian', selectedLanguage === 'id');
       setIsLoading(false);
       setLanguageChangeMessage('');
-    }, 2000); // Set the loading duration in milliseconds (2 seconds in this case)
+    }, 1000); // Set the loading duration in milliseconds (2 seconds in this case)
   };
 
   useEffect(() => {
@@ -63,7 +69,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="font-lexend-deca border-[12px] border-[#2C8E53] h-[100vh] w-[100vw] overflow-auto bg-[#CCE5D0] relative">
+    <div className="font-lexend-deca border-[12px] border-[#2C8E53] h-screen w-screen overflow-auto bg-[#CCE5D0] relative">
       {showLanguagePopup && (
         <LanguagePopup onSelectLanguage={handleLanguageSelect} />
       )}
@@ -74,26 +80,34 @@ const Home = () => {
       )}
       <div className="h-[100%] w-[100%] p-[35px]">
         <div className='flex flex-row justify-between'>
-        {!isMenuOpen ? (
-          <img className='absolute top-0 left-0 mt-9 ml-9 z-20' src={PedestalLogo_Green} alt="Pedestal Logo" height={60} width={60} />
-        ) : (
-          <img className='absolute top-0 left-0 mt-9 ml-9 z-30 transition-opacity duration-700' src={PedestalLogo_White} alt="Pedestal Logo" height={60} width={60} />
-        )}
-          <div className='absolute top-0 right-0 mt-14 mr-14 flex flex-row gap-10 justify-center items-center'>
-            <div className=' text-[#3A6742] flex flex-row gap-2 justify-center items-center'>
-              <p className={`h-full ${isIndonesian ? 'opacity-30' : 'font-bold opacity-100'}`}>EN</p>
-              <ReactSwitch
-                className="language-switch"
-                checked={isIndonesian}
-                onChange={toggleLanguage}
-                onColor="#77BF82" // Color when switched on
-                offColor="#3A6742" // Color when switched off
-                checkedIcon={false} // No icon when checked
-                uncheckedIcon={false} // No icon when unchecked
-                height={30}
-                width={60}
-              />
-              <p className={`h-full ${isIndonesian ? 'font-bold opacity-100' : 'opacity-30'}`}>ID</p>
+          {!isMenuOpen ? (
+            <>
+              <a href='/'>
+                <img className='absolute top-0 left-0 mt-9 ml-9 z-20' src={PedestalLogo_Green} alt="Pedestal Logo" height={60} width={60} />
+              </a>
+            </>
+          ) : (
+            <>
+              <a href='/'>
+                <img className='absolute top-0 left-0 mt-9 ml-9 z-30 transition-opacity duration-700' src={PedestalLogo_White} alt="Pedestal Logo" height={60} width={60} />
+              </a>
+            </>
+          )}
+          <div className='absolute top-0 right-0 mt-14 mr-14 flex flex-row gap-6 justify-center items-center'>
+            {/* Modern Dropdown Language */}
+            <div className="relative">
+            <label htmlFor="languageSelect" className="text-[#3A6742] flex flex-row gap-2 justify-center items-center cursor-pointer p-2">
+                
+                <select
+                  id="languageSelect"
+                  className="select-dropdown rounded-md p-1"
+                  value={isIndonesian ? 'id' : 'en'}
+                  onChange={handleLanguageChange}
+                >
+                  <option value="en">English</option>
+                  <option value="id">Indonesian</option>
+                </select>
+              </label>
             </div>
             {/* Hamburger Icon */}
             <div>
@@ -128,6 +142,7 @@ const Home = () => {
             {isIndonesian ? <Link to="/fitur" className={location.pathname === '/fitur' ? 'menu-item active' : 'menu-item'}>FITUR</Link> : <Link to="/features" className={location.pathname === '/features' ? 'menu-item active' : 'menu-item'}>FEATURES</Link>}
             {isIndonesian ? <Link to="/latar_belakang" className={location.pathname === '/latar_belakang' ? 'menu-item active' : 'menu-item'}>LATAR BELAKANG</Link> : <Link to="/backgrounds" className={location.pathname === '/backgrounds' ? 'menu-item active' : 'menu-item'}>BACKGROUNDS</Link>}
             {isIndonesian ? <Link to="/kontak" className={location.pathname === '/kontak' ? 'menu-item active' : 'menu-item'}>KONTAK</Link> : <Link to="/contacts" className={location.pathname === '/contacts' ? 'menu-item active' : 'menu-item'}>CONTACTS</Link>}
+            {/* {isIndonesian ? <Link to="#pengaturan" className={location.pathname === '/pengaturan' ? 'menu-item active' : 'menu-item'}>PENGATURAN</Link> : <Link to="/settings" className={location.pathname === '#settings' ? 'menu-item active' : 'menu-item'}>SETTINGS</Link>} */}
           </div>
 
           <a href='https://www.instagram.com/pedestal.id' className='absolute bottom-0 right-0 mb-16 mr-14 flex flex-col items-end gap-2 bg-gradient-to-b from-[#77BF82] to-[#3A6742] px-4 py-2 rounded-md'>
@@ -139,7 +154,7 @@ const Home = () => {
           </a>
 
           <div className='absolute bottom-0 left-0 mb-16 ml-14 text-white flex flex-row gap-2 justify-center items-center'>
-            <p className={`h-full ${isIndonesian ? 'opacity-30' : 'font-bold opacity-100'}`}>EN</p>
+            {/* <p className={`h-full ${isIndonesian ? 'opacity-30' : 'font-bold opacity-100'}`}>EN</p>
             <ReactSwitch
               className="language-switch"
               checked={isIndonesian}
@@ -151,9 +166,21 @@ const Home = () => {
               height={30}
               width={60}
             />
-            <p className={`h-full ${isIndonesian ? 'font-bold opacity-100' : 'opacity-30'}`}>ID</p>
+            <p className={`h-full ${isIndonesian ? 'font-bold opacity-100' : 'opacity-30'}`}>ID</p> */}
+            <div className="relative">
+              <label label htmlFor="languageSelect" className="text-[#3A6742] flex flex-row gap-2 justify-center items-center cursor-pointer p-2">
+                <select
+                  id="languageSelect"
+                  className="select-dropdown rounded-md p-1"
+                  value={isIndonesian ? 'id' : 'en'}
+                  onChange={handleLanguageChange}
+                >
+                  <option value="en">English</option>
+                  <option value="id">Indonesian</option>
+                </select>
+              </label>
+            </div>
           </div>
-
         </div>
       </div>
     </div>
