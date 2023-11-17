@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './css/LanguagePopup.css';
-import { FaMapMarker, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import { BsArrowsAngleExpand, BsArrowsAngleContract } from "react-icons/bs";
 
 const LanguagePopup = ({ onSelectLanguage }) => {
   const [selectedLanguage, setSelectedLanguage] = useState('');
@@ -46,8 +47,61 @@ const LanguagePopup = ({ onSelectLanguage }) => {
     cursor: 'pointer',
   };
 
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const handleFullscreenChange = () => {
+    setIsFullscreen(document.fullscreenElement !== null);
+  };
+
+  const toggleFullscreen = () => {
+    const element = document.documentElement;
+
+    if (!isFullscreen) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, []);
+
   return (
     <div className="language-popup-background">
+      {/* Fullscreen Button */}
+      <button
+          className="text-black bg-white rounded-md px-2 py-2 cursor-pointer absolute top-0 right-0 mt-5 mr-5"
+          onClick={toggleFullscreen}
+        >
+          {isFullscreen ? <BsArrowsAngleContract /> : <BsArrowsAngleExpand />}
+        </button> 
       <div className="language-popup">
         {/* Display the user's location */}
         <div className='flex flex-row gap-2 justify-center items-center px-3 py-2 mb-3 bg-sky-500 text-white rounded-lg'>
