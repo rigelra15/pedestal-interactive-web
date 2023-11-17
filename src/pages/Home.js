@@ -5,6 +5,7 @@ import PedestalLogo_Green from '../icons/Pedestal-Green.png';
 import InstagramLogo from '../icons/instagram.svg';
 import './css/home.css'; // Import a CSS file for custom styles (create this file)
 import LanguagePopup from './LanguagePopup';
+import LikeButton from './LikeButton';
 import './css/LoadingOverlay.css'
 import { BsArrowsAngleExpand, BsArrowsAngleContract } from "react-icons/bs";
 
@@ -180,6 +181,13 @@ const Home = () => {
           </div>
         </div>
 
+        {/* Display the LikeButton component */}
+        {/* <div className="ml-[200px] mt-[100px]">
+          <h2>Post Title</h2>
+          <p>Post content goes here...</p>
+          <LikeButton postId={1} initialLikes={50} />
+        </div> */}
+
         {/* Background Overlay */}
         <div className={`background-overlay ${isMenuOpen ? 'open' : ''}`} />
 
@@ -198,6 +206,7 @@ const Home = () => {
             {isIndonesian ? <Link to="/fitur" className={location.pathname === '/fitur' ? 'menu-item active' : 'menu-item'}>FITUR</Link> : <Link to="/features" className={location.pathname === '/features' ? 'menu-item active' : 'menu-item'}>FEATURES</Link>}
             {isIndonesian ? <Link to="/latar_belakang" className={location.pathname === '/latar_belakang' ? 'menu-item active' : 'menu-item'}>LATAR BELAKANG</Link> : <Link to="/backgrounds" className={location.pathname === '/backgrounds' ? 'menu-item active' : 'menu-item'}>BACKGROUNDS</Link>}
             {isIndonesian ? <Link to="/kontak" className={location.pathname === '/kontak' ? 'menu-item active' : 'menu-item'}>KONTAK</Link> : <Link to="/contacts" className={location.pathname === '/contacts' ? 'menu-item active' : 'menu-item'}>CONTACTS</Link>}
+            {isIndonesian ? <Link to="/demo" className={location.pathname === '/demo' ? 'menu-item active' : 'menu-item'}>DEMO</Link> : <Link to="/demonstrations" className={location.pathname === '/demonstrations' ? 'menu-item active' : 'menu-item'}>DEMO</Link>}
             {/* {isIndonesian ? <Link to="#pengaturan" className={location.pathname === '/pengaturan' ? 'menu-item active' : 'menu-item'}>PENGATURAN</Link> : <Link to="/settings" className={location.pathname === '#settings' ? 'menu-item active' : 'menu-item'}>SETTINGS</Link>} */}
           </div>
 
