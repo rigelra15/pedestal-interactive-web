@@ -8,6 +8,9 @@ import LanguagePopup from './LanguagePopup';
 // import LikeButton from './LikeButton';
 import './css/LoadingOverlay.css'
 import { BsArrowsAngleExpand, BsArrowsAngleContract } from "react-icons/bs";
+import { Player } from 'video-react';
+// import "node_modules/video-react/dist/video-react.css";
+import YouTube from 'react-youtube';
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -96,115 +99,149 @@ const Home = () => {
       document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
     };
   }, []);
+  
+  const [autoplayVideo, setAutoplayVideo] = useState(true);
+
+  const handleTouchOrClick = () => {
+    setAutoplayVideo(true);
+  };
+
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    // Clean up event listeners on component unmount
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, [isFullscreen]);
+
+  const videoOptions = {
+    playerVars: {
+      autoplay: 1,
+      controls: 0,
+      rel: 0,
+      showinfo: 0,
+      mute: 1,
+      loop: 1,
+    }
+  };
 
   return (
-    <div className="font-lexend-deca border-[12px] border-[#2C8E53] h-screen w-screen overflow-auto bg-[#CCE5D0] relative">
-      {showLanguagePopup && (
-        <LanguagePopup onSelectLanguage={handleLanguageSelect} />
-      )}
-      {isLoading && (
-        <div className="loading-overlay">
-          <p>{languageChangeMessage || 'Please wait...'}</p>
-        </div>
-      )}
-      <div className="h-[100%] w-[100%] p-[35px]">
-        <div className='flex flex-row justify-between'>
-          {!isMenuOpen ? (
-            <>
-              <a href='/'>
-                <img className='absolute top-0 left-0 mt-9 ml-9 z-20' src={PedestalLogo_Green} alt="Pedestal Logo" height={60} width={60} />
-                <p className='absolute top-0 left-0 mt-[70px] ml-24 text-2xl font-bold text-[#318d57] z-20'>edestal</p>
-              </a>
-            </>
-          ) : (
-            <>
-              <a href='/'>
-                <img className='absolute top-0 left-0 mt-9 ml-9 z-30 transition-opacity duration-700' src={PedestalLogo_White} alt="Pedestal Logo" height={60} width={60} />
-                <p className='absolute top-0 left-0 mt-[70px] ml-24 text-2xl font-bold text-white z-30'>edestal</p>
-              </a>
-            </>
-          )}
-          <div className='absolute top-0 right-0 mt-14 mr-14 flex flex-row gap-4 justify-center items-center'>
-            <div className="relative">
-              <label htmlFor="languageSelect" className="text-[#3A6742] flex flex-row gap-2 justify-center items-center cursor-pointer">
-                
-                <select
-                  id="languageSelect"
-                  className="select-dropdown rounded-md px-2 py-[7px]"
-                  value={isIndonesian ? 'id' : 'en'}
-                  onChange={handleLanguageChange}
-                >
-                  <option value="en">English</option>
-                  <option value="id">Indonesian</option>
-                </select>
-              </label>
-            </div>
+    <>
+      <div className="font-lexend-deca border-[12px] border-[#2C8E53] h-screen w-screen overflow-auto bg-[#CCE5D0] relative">
+        {showLanguagePopup && (
+          <LanguagePopup onSelectLanguage={handleLanguageSelect} />
+        )}
+        {isLoading && (
+          <div className="loading-overlay">
+            <p>{languageChangeMessage || 'Please wait...'}</p>
+          </div>
+        )}
+        <div className="h-full w-full p-[35px]">
+          <div className='flex flex-row justify-between'>
+            {!isMenuOpen ? (
+              <>
+                <a href='/'>
+                  <img className='absolute top-0 left-0 mt-9 ml-9 z-20' src={PedestalLogo_Green} alt="Pedestal Logo" height={60} width={60} />
+                  <p className='absolute top-0 left-0 mt-[70px] ml-24 text-2xl font-bold text-[#318d57] z-20'>edestal</p>
+                </a>
+              </>
+            ) : (
+              <>
+                <a href='/'>
+                  <img className='absolute top-0 left-0 mt-9 ml-9 z-30 transition-opacity duration-700' src={PedestalLogo_White} alt="Pedestal Logo" height={60} width={60} />
+                  <p className='absolute top-0 left-0 mt-[70px] ml-24 text-2xl font-bold text-white z-30'>edestal</p>
+                </a>
+              </>
+            )}
+            <div className='absolute top-0 right-0 mt-14 mr-14 flex flex-row gap-4 justify-center items-center'>
+              <div className="relative">
+                <label htmlFor="languageSelect" className="text-[#3A6742] flex flex-row gap-2 justify-center items-center cursor-pointer">
+                  
+                  <select
+                    id="languageSelect"
+                    className="select-dropdown rounded-md px-2 py-[7px]"
+                    value={isIndonesian ? 'id' : 'en'}
+                    onChange={handleLanguageChange}
+                  >
+                    <option value="en">English</option>
+                    <option value="id">Indonesian</option>
+                  </select>
+                </label>
+              </div>
 
-            <button
-              className="text-black bg-white rounded-md px-2 py-2 cursor-pointer"
-              onClick={toggleFullscreen}
-            >
-              {isFullscreen ? <BsArrowsAngleContract /> : <BsArrowsAngleExpand />}
-            </button>
-
-            <div>
               <button
-                className=""
-                onClick={toggleMenu}
-                disabled={isMenuOpen}
+                className="text-black bg-white rounded-md px-2 py-2 cursor-pointer"
+                onClick={toggleFullscreen}
               >
-                <div className="hamburger-line bg-black mb-[5px] mt-[5px] w-[30px] h-[3px]"></div>
-                <div className="hamburger-line bg-black mb-[5px] w-[30px] h-[3px]"></div>
-                <div className="hamburger-line bg-black w-[30px] h-[3px]"></div>
+                {isFullscreen ? <BsArrowsAngleContract /> : <BsArrowsAngleExpand />}
               </button>
-            </div>
-          </div>
-        </div>
 
-        <div className={`background-overlay ${isMenuOpen ? 'open' : ''}`} />
-
-        <div className={`menu-overlay ${isMenuOpen ? 'open' : ''}`}>
-          <div className="text-left text-white font-bold flex flex-col" style={{ marginLeft: '35px' }}>
-            <button
-              className="absolute top-0 right-0 mt-[70px] mr-14 text-white"
-              onClick={closeMenu}
-            >
-              <div className="hamburger-line rotate-45 bg-white rounded mb-[5px] w-[30px] h-[3px]"></div>
-              <div className="hamburger-line -mt-2 -rotate-45 bg-white rounded mb-[5px] w-[30px] h-[3px]"></div>
-            </button>
-            {isIndonesian ? <Link to="/" className={location.pathname === '/' ? 'menu-item active' : 'menu-item'}>BERANDA</Link> : <Link to="/" className={location.pathname === '/' ? 'menu-item active' : 'menu-item'}>HOME</Link>}
-            {isIndonesian ? <Link to="/tujuan" className={location.pathname === '/tujuan' ? 'menu-item active' : 'menu-item'}>TUJUAN</Link> : <Link to="/goals" className={location.pathname === '/goals' ? 'menu-item active' : 'menu-item'}>GOALS</Link>}
-            {isIndonesian ? <Link to="/fitur" className={location.pathname === '/fitur' ? 'menu-item active' : 'menu-item'}>FITUR</Link> : <Link to="/features" className={location.pathname === '/features' ? 'menu-item active' : 'menu-item'}>FEATURES</Link>}
-            {isIndonesian ? <Link to="/latar_belakang" className={location.pathname === '/latar_belakang' ? 'menu-item active' : 'menu-item'}>LATAR BELAKANG</Link> : <Link to="/backgrounds" className={location.pathname === '/backgrounds' ? 'menu-item active' : 'menu-item'}>BACKGROUNDS</Link>}
-            {isIndonesian ? <Link to="/kontak" className={location.pathname === '/kontak' ? 'menu-item active' : 'menu-item'}>KONTAK</Link> : <Link to="/contacts" className={location.pathname === '/contacts' ? 'menu-item active' : 'menu-item'}>CONTACTS</Link>}
-            {isIndonesian ? <Link to="/demo" className={location.pathname === '/demonstrasi' ? 'menu-item active' : 'menu-item'}>DEMONSTRASI</Link> : <Link to="/demonstrations" className={location.pathname === '/demonstrations' ? 'menu-item active' : 'menu-item'}>DEMONSTRATION</Link>}
-          </div>
-
-          <a href='https://www.instagram.com/pedestal.id' className='absolute bottom-0 right-0 mb-16 mr-14 flex flex-col items-end gap-2 bg-gradient-to-b from-[#77BF82] to-[#3A6742] px-4 py-2 rounded-md'>
-            <div className='flex flex-row justify-center items-center gap-3 text-white'>
-              <p className='font-bold'>@pedestal.id</p>
-              <img src={InstagramLogo} alt="Instagram Logo" height={25} width={25} />
-            </div>
-          </a>
-
-          <div className='absolute bottom-0 left-0 mb-16 ml-14 text-white flex flex-row gap-2 justify-center items-center'>
-            <div className="relative">
-              <label label htmlFor="languageSelect" className="text-[#3A6742] flex flex-row gap-2 justify-center items-center cursor-pointer p-2">
-                <select
-                  id="languageSelect"
-                  className="select-dropdown rounded-md p-1"
-                  value={isIndonesian ? 'id' : 'en'}
-                  onChange={handleLanguageChange}
+              <div>
+                <button
+                  className=""
+                  onClick={toggleMenu}
+                  disabled={isMenuOpen}
                 >
-                  <option value="en">English</option>
-                  <option value="id">Indonesian</option>
-                </select>
-              </label>
+                  <div className="hamburger-line bg-black mb-[5px] mt-[5px] w-[30px] h-[3px]"></div>
+                  <div className="hamburger-line bg-black mb-[5px] w-[30px] h-[3px]"></div>
+                  <div className="hamburger-line bg-black w-[30px] h-[3px]"></div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className={`background-overlay ${isMenuOpen ? 'open' : ''}`} />
+
+          <div className={`menu-overlay ${isMenuOpen ? 'open' : ''}`}>
+            <div className="text-left text-white font-bold flex flex-col" style={{ marginLeft: '35px' }}>
+              <button
+                className="absolute top-0 right-0 mt-[70px] mr-14 text-white"
+                onClick={closeMenu}
+              >
+                <div className="hamburger-line rotate-45 bg-white rounded mb-[5px] w-[30px] h-[3px]"></div>
+                <div className="hamburger-line -mt-2 -rotate-45 bg-white rounded mb-[5px] w-[30px] h-[3px]"></div>
+              </button>
+              {isIndonesian ? <Link to="/" className={location.pathname === '/' ? 'menu-item active' : 'menu-item'}>BERANDA</Link> : <Link to="/" className={location.pathname === '/' ? 'menu-item active' : 'menu-item'}>HOME</Link>}
+              {isIndonesian ? <Link to="/tujuan" className={location.pathname === '/tujuan' ? 'menu-item active' : 'menu-item'}>TUJUAN</Link> : <Link to="/goals" className={location.pathname === '/goals' ? 'menu-item active' : 'menu-item'}>GOALS</Link>}
+              {isIndonesian ? <Link to="/fitur" className={location.pathname === '/fitur' ? 'menu-item active' : 'menu-item'}>FITUR</Link> : <Link to="/features" className={location.pathname === '/features' ? 'menu-item active' : 'menu-item'}>FEATURES</Link>}
+              {isIndonesian ? <Link to="/latar_belakang" className={location.pathname === '/latar_belakang' ? 'menu-item active' : 'menu-item'}>LATAR BELAKANG</Link> : <Link to="/backgrounds" className={location.pathname === '/backgrounds' ? 'menu-item active' : 'menu-item'}>BACKGROUNDS</Link>}
+              {isIndonesian ? <Link to="/kontak" className={location.pathname === '/kontak' ? 'menu-item active' : 'menu-item'}>KONTAK</Link> : <Link to="/contacts" className={location.pathname === '/contacts' ? 'menu-item active' : 'menu-item'}>CONTACTS</Link>}
+              {isIndonesian ? <Link to="/demonstrasi" className={location.pathname === '/demonstrasi' ? 'menu-item active' : 'menu-item'}>DEMONSTRASI</Link> : <Link to="/demonstrations" className={location.pathname === '/demonstrations' ? 'menu-item active' : 'menu-item'}>DEMONSTRATION</Link>}
+            </div>
+
+            <a href='https://www.instagram.com/pedestal.id' className='absolute bottom-0 right-0 mb-16 mr-14 flex flex-col items-end gap-2 bg-gradient-to-b from-[#77BF82] to-[#3A6742] px-4 py-2 rounded-md'>
+              <div className='flex flex-row justify-center items-center gap-3 text-white'>
+                <p className='font-bold'>@pedestal.id</p>
+                <img src={InstagramLogo} alt="Instagram Logo" height={25} width={25} />
+              </div>
+            </a>
+
+            <div className='absolute bottom-0 left-0 mb-16 ml-14 text-white flex flex-row gap-2 justify-center items-center'>
+              <div className="relative">
+                <label label htmlFor="languageSelect" className="text-[#3A6742] flex flex-row gap-2 justify-center items-center cursor-pointer p-2">
+                  <select
+                    id="languageSelect"
+                    className="select-dropdown rounded-md p-1"
+                    value={isIndonesian ? 'id' : 'en'}
+                    onChange={handleLanguageChange}
+                  >
+                    <option value="en">English</option>
+                    <option value="id">Indonesian</option>
+                  </select>
+                </label>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
